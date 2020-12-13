@@ -24,3 +24,8 @@ A description of the data required, and how it will be obtained (e.g. URL/DOI to
   I will also be creating detailed visual representations of my findings in the form of bar charts and graphs. 
   Essentially I want to see which country is emitting most and their rate of emission.
   I will also create a website to publish my findings.
+  
+```{r}
+countryGHG <- read.csv("https://raw.githubusercontent.com/espm-157/Nguyen-Grant-Final-Project/master/cait_annex_ghgemissions.csv")
+countryGHG
+```
