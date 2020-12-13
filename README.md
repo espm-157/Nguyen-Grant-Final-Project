@@ -1,10 +1,16 @@
+## Lab Summary
 
-*add GitHub Actions badge here*
+This lab provides an analysis into 
+
+First, we looked at 
+
+The purpose of these observations is to show 
+
+![Reproducibility](https://github.com/espm-157/Nguyen-Grant-Final-Project/workflows/Reproducibility/badge.svg)
 
 ## Team Members:
 
-- full name, github handle
-- full name, github handle
+- Grant Nguyen, grantnguyenq
 
 This repository is a template for your team's repository.
 
