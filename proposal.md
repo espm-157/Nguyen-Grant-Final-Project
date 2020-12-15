@@ -10286,9 +10286,11 @@ USA2 %>% summarise(meanenergy / ghgsector, meanip / ghgsector, meansolvent / ghg
     ## 21         0.07570774          -0.1375669         0.02458719
     ## 22         0.07570774          -0.1375669         0.02458719
 
-\#\#\#Analysis From the total GHG emissions graph by the US, it clear
-that GHG emissions is increasing by the US. This is a worrying trend
-that counters the growing climate awareness trend in the 21st century.
+### Analysis
+
+From the total GHG emissions graph by the US, it clear that GHG
+emissions is increasing by the US. This is a worrying trend that
+counters the growing climate awareness trend in the 21st century.
 Additionally I wanted to give a breakdown of sector emissions within the
 US. I calculated that the energy sector has 98% of the GHG emissions,
 while agriculture has 7.57%, followed by industrial processes at 5.47%,
