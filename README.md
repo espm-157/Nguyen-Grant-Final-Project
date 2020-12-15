@@ -1,10 +1,21 @@
 ## Lab Summary
 
-This lab provides an analysis into 
+This project serves to answer three primary questions focuses on the topic of GHG emissions: Is the average greenhouse gas emissions from CAIT (China excuded) countries going down? Do individual greenhouse gasses follow the trend of GHG's as a whole and what is the percentage of each individual gas emission relative to all gas emissions? What are the GHG emissions relative to economic sectors and what is the breakdown for USA's emissions. 
 
-First, we looked at 
+The purpose of these observations is to elucidate if the rate of GHG emissions is going down and give information on what gases and sectors of the economy in countries like the US are most emission heavy. For the future, policy makers should work on decreasing GHG emissions for these sectors and most common greenhiuse gasses.
 
-The purpose of these observations is to show 
+
+A description of the data required, and how it will be obtained (e.g. URL/DOI to data source): https://datasets.wri.org/dataset/cait-country 
+  
+  Data will be in csv format and contain metric tons of GHG emissions by country, gas, sectors, and subsectors from start of data collection 1990 till 2011.
+
+3 questions / analysis tasks you will perform on the data; in the spirit of the assignments we have been doing:
+  
+  I will be importing my csv in r and I will use dyplr, ggplot, and more libraries to create new variables like total GHG emissions by country and average GHG rates, which includes use of custom R functions
+  I will also be creating detailed visual representations of my findings in the form of bar charts and graphs. 
+  Essentially I want to see which country is emitting most and their rate of emission.
+  I want to also explore emissions by gas and sector of the economy in the US. 
+
 
 ![Reproducibility](https://github.com/espm-157/Nguyen-Grant-Final-Project/workflows/Reproducibility/badge.svg)
 

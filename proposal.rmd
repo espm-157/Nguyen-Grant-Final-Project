@@ -5,27 +5,166 @@ date: "11/1/2020"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ## R Markdown
 
-Title & description of the project: CO2 Emissions by Country
+Title & description of the project: A deeper dive into GHG Emissions 
 
 Your name & partner's name: Grant Nguyen
 
-A description of the data required, and how it will be obtained (e.g. URL/DOI to data source): https://datasets.wri.org/dataset/cait-country 
-  Data will be in csv format and contain metric tons of CO2 emissions by country from start of data collection till 2012.
+```{r}
+library(tidyverse)
+library(zoo)
+install.packages("RcppRoll")
+library(RcppRoll)
+library(lubridate)
+```
 
-3 questions / analysis tasks you will perform on the data; in the spirit of the assignments we have been doing:
-  
-  I will be importing my csv in r and I will use dyplr,ggplot, and more libraries to create new variables like total CO2 emissions by country and average CO2 rates by country, which includes use of custom R functions
-  I will also be creating detailed visual representations of my findings in the form of bar charts and graphs. 
-  Essentially I want to see which country is emitting most and their rate of emission.
-  I will also create a website to publish my findings.
-  
 ```{r}
 countryGHG <- read.csv("https://raw.githubusercontent.com/espm-157/Nguyen-Grant-Final-Project/master/cait_annex_ghgemissions.csv")
 countryGHG
 ```
+
+```{r}
+countryGHG0 <- rename(countryGHG, "totalGHGemissions" = "Total.GHG.Emissions.Excluding.LUCF..MtCO2e.", "totalGHGemissionsLUCF" = "Total.GHG.Emissions.Including.LUCF..MtCO2e.", "totalCO2" = "Total.CO2..excluding.LUCF...MtCO2e.", "totalCH4" = "Total.CH4..MtCO2e.", "totalN2O" = "Total.N2O..MtCO2e.", "totalFgas" = "Total.F.Gas..MtCO2e.", "energy" = "Energy..MtCO2e.", "industrialprocesses" = "Industrial.Processes..MtCO2e.", "Solvent" = "Solvent.and.Other.Product.Use..MtCO2e.", "agriculture" = "Agriculture..MtCO2e.", "waste" = "Waste..MtCO2e.", "LUCF" = "Land.Use.and.Forestry..Net.Forest.Conversion...MtCO2e.", "energyindustries" = "Energy.Industries..MtCO2e.", "ManuIndusConst" = "Manufacturing.Industries.and.Construction..MtCO2e.", "transport" = "Transport..MtCO2e.", "othersectors" = "Other.Sectors..MtCO2e.", "energyother" = "Energy...Other..MtCO2e.", "fugitiveemissions" = "Fugitive.Emissions.from.Fuels..MtCO2e.")
+```
+
+```{r}
+countryGHG1 <- countryGHG0 %>%
+  group_by(Year, Country) 
+countryGHG1
+
+G1 <- countryGHG1 %>% 
+  ggplot(aes(x = Year, y = totalGHGemissions, color = Country)) +
+  geom_line() + 
+  ggtitle("GHG Emissions by Year") + 
+  labs(y="Total GHG Emissions", x = "Year")
+G1
+
+ghg <- countryGHG1 %>% group_by(Year) %>% mutate(meanghg = mean(totalGHGemissions), na.rm=TRUE)
+
+G2 <- ghg %>% 
+  ggplot(aes(x = Year, y = meanghg, color = Country)) +
+  geom_line() + 
+  ggtitle("Average GHG Emissions by Year") + 
+  labs(y="Avg GHG Emissions", x = "Year")
+G2
+```
+
+```{r}
+percent <- countryGHG1 %>% mutate(percentco2 = totalCO2 / totalGHGemissions)
+
+percent %>% 
+  ggplot(aes(x = Year, y = percentco2, color = Country)) +
+  geom_line() + 
+  ggtitle("Percent CO2 Emissions by Year")
+
+percent3 <- percent %>% group_by(Country) %>% summarize(mean = mean(percentco2), na.rm=TRUE)
+percent3
+
+percent3 %>% summarize(mean1 = mean(mean), na.rm=TRUE)
+
+```
+
+```{r}
+percent1 <- countryGHG1 %>% mutate(percentch4 = totalCH4 / totalGHGemissions)
+
+percent1 %>% 
+  ggplot(aes(x = Year, y = percentch4, color = Country)) +
+  geom_line() + 
+  ggtitle("Percent CH4 Emissions by Year")
+
+percent2 <- percent1 %>% group_by(Country) %>% summarize(mean = mean(percentch4), na.rm=TRUE)
+percent2
+
+percent2 %>% summarize(mean1 = mean(mean), na.rm=TRUE)
+  
+```
+
+```{r}
+percent4 <- countryGHG1 %>% mutate(percentn2o = totalN2O / totalGHGemissions)
+
+percent4 %>% 
+  ggplot(aes(x = Year, y = percentn2o, color = Country)) +
+  geom_line() + 
+  ggtitle("Percent N2O Emissions by Year")
+
+percent5 <- percent4 %>% group_by(Country) %>% summarize(mean = mean(percentn2o), na.rm=TRUE)
+percent5
+
+percent5 %>% summarize(mean1 = mean(mean), na.rm=TRUE)
+  
+```
+
+```{r}
+percent6 <- countryGHG1 %>% mutate(percentfgas = totalFgas / totalGHGemissions)
+
+percent6 %>% 
+  ggplot(aes(x = Year, y = percentfgas, color = Country)) +
+  geom_line() + 
+  ggtitle("Percent F Gas Emissions by Year")
+
+percent7 <- percent6 %>% group_by(Country) %>% summarize(mean = mean(percentfgas), na.rm=TRUE) 
+
+percent7 <- na.omit(percent7)
+
+percent7 %>% summarize(mean1 = mean(mean), na.rm=TRUE)
+  
+```
+
+GHG by Sector
+```{r}
+G6 <- countryGHG1 %>% 
+  ggplot(aes(x = Year, y = energy, color = Country)) +
+  geom_line() 
+G6
+```
+
+```{r}
+G7 <- countryGHG1 %>% 
+  ggplot(aes(x = Year, y = industrialprocesses, color = Country)) +
+  geom_line() 
+G7
+```
+
+```{r}
+G8 <- countryGHG1 %>% 
+  ggplot(aes(x = Year, y = agriculture, color = Country)) +
+  geom_line() 
+G8
+```
+
+```{r}
+G9 <- countryGHG1 %>% 
+  ggplot(aes(x = Year, y = waste, color = Country)) +
+  geom_line() 
+G9
+```
+
+```{r}
+USA <- countryGHG0 %>% filter(Country == "United States of America")
+USA
+
+USA1 <- USA %>% 
+  ggplot(aes(x = Year, y = totalGHGemissions)) +
+  geom_line() + 
+  ggtitle("USA's GHG Emission by Year") + 
+  labs(y="Total GHG Emissions", x = "Year")
+USA1
+
+USA2 <- USA %>% mutate(meanenergy = mean(energy), meanip = mean(industrialprocesses), meansolvent = mean(Solvent), meanagri = mean(agriculture), meanwaste = mean(waste), meanlucf = mean(LUCF), na.rm=TRUE) %>% mutate(ghgsector = meanenergy + meanip + meansolvent + meanagri + meanwaste + meanlucf)
+USA2
+
+USA2 %>% summarise(meanenergy / ghgsector, meanip / ghgsector, meansolvent / ghgsector, meansolvent / ghgsector, meanagri / ghgsector, meanwaste / ghgsector, meanlucf / ghgsector)
+``` 
+
+
+
+
+
+
+
+
+
+
+
+
