@@ -1,9 +1,8 @@
-## Lab Summary
+## Proposal
 
-This project serves to answer three primary questions focuses on the topic of GHG emissions: Is the average greenhouse gas emissions from CAIT (China excuded) countries going down? Do individual greenhouse gasses follow the trend of GHG's as a whole and what is the percentage of each individual gas emission relative to all gas emissions? What are the GHG emissions relative to economic sectors and what is the breakdown for USA's emissions. 
+Title & description of the project: A deeper dive into GHG Emissions 
 
-The purpose of these observations is to elucidate if the rate of GHG emissions is going down and give information on what gases and sectors of the economy in countries like the US are most emission heavy. For the future, policy makers should work on decreasing GHG emissions for these sectors and most common greenhiuse gasses.
-
+Your name & partner's name: Grant Nguyen
 
 A description of the data required, and how it will be obtained (e.g. URL/DOI to data source): https://datasets.wri.org/dataset/cait-country 
   
@@ -15,6 +14,12 @@ A description of the data required, and how it will be obtained (e.g. URL/DOI to
   I will also be creating detailed visual representations of my findings in the form of bar charts and graphs. 
   Essentially I want to see which country is emitting most and their rate of emission.
   I want to also explore emissions by gas and sector of the economy in the US. 
+  
+## Lab Summary
+
+This project serves to answer three primary questions focuses on the topic of GHG emissions: Is the average greenhouse gas emissions from CAIT (China excuded) countries going down? Do individual greenhouse gasses follow the trend of GHG's as a whole and what is the percentage of each individual gas emission relative to all gas emissions? What are the GHG emissions relative to economic sectors and what is the breakdown for USA's emissions. 
+
+The purpose of these observations is to elucidate if the rate of GHG emissions is going down and give information on what gases and sectors of the economy in countries like the US are most emission heavy. For the future, policy makers should work on decreasing GHG emissions for these sectors and most common greenhiuse gasses.
 
 
 ![Reproducibility](https://github.com/espm-157/Nguyen-Grant-Final-Project/workflows/Reproducibility/badge.svg)

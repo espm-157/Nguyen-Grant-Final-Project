@@ -3,57 +3,35 @@ RmarkdownNguyenFinalProject
 Grant Nguyen
 11/1/2020
 
-## R Markdown
+# A Deeper Dive into GHG Emissions by Grant Nguyen
 
-Title & description of the project: A deeper dive into GHG Emissions
+## Introduction
 
-Your name & partner’s name: Grant
-    Nguyen
+This project will focus on the data by CAIT countries on GHG emissions
+by countries, gases, and sectors of the economy. Most countries are
+include except China, which refused to partake. From my end, I wanted to
+flesh out and explore this data by visualizing many graphs, while also
+answering a few prominent questions. These questions are: Is the average
+greenhouse gas emissions from CAIT (China excuded) countries going down?
+Do individual greenhouse gasses follow the trend of GHG’s as a whole and
+what is the percentage of each individual gas emission relative to all
+gas emissions? What are the GHG emissions relative to economic sectors
+and what is the breakdown for USA’s emissions? Answering these question
+will help my report elucidate which gases are prominent and which
+sectors are the heavy emitters.
+
+Packages
 
 ``` r
 library(tidyverse)
-```
-
-    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
-
-    ## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-    ## ✓ tibble  3.0.4     ✓ dplyr   1.0.2
-    ## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
-    ## ✓ readr   1.4.0     ✓ forcats 0.5.0
-
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 library(zoo)
-```
-
-    ## 
-    ## Attaching package: 'zoo'
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     as.Date, as.Date.numeric
-
-``` r
 install.packages("RcppRoll")
-```
-
-    ## Installing package into '/usr/local/lib/R/site-library'
-    ## (as 'lib' is unspecified)
-
-``` r
 library(RcppRoll)
 library(lubridate)
 ```
 
-    ## 
-    ## Attaching package: 'lubridate'
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     date, intersect, setdiff, union
+Loading in
+data
 
 ``` r
 countryGHG <- read.csv("https://raw.githubusercontent.com/espm-157/Nguyen-Grant-Final-Project/master/cait_annex_ghgemissions.csv")
@@ -9751,9 +9729,13 @@ countryGHG
     ## 967                                11.5238
     ## 968                               276.9994
 
+## Renaming data
+
 ``` r
 countryGHG0 <- rename(countryGHG, "totalGHGemissions" = "Total.GHG.Emissions.Excluding.LUCF..MtCO2e.", "totalGHGemissionsLUCF" = "Total.GHG.Emissions.Including.LUCF..MtCO2e.", "totalCO2" = "Total.CO2..excluding.LUCF...MtCO2e.", "totalCH4" = "Total.CH4..MtCO2e.", "totalN2O" = "Total.N2O..MtCO2e.", "totalFgas" = "Total.F.Gas..MtCO2e.", "energy" = "Energy..MtCO2e.", "industrialprocesses" = "Industrial.Processes..MtCO2e.", "Solvent" = "Solvent.and.Other.Product.Use..MtCO2e.", "agriculture" = "Agriculture..MtCO2e.", "waste" = "Waste..MtCO2e.", "LUCF" = "Land.Use.and.Forestry..Net.Forest.Conversion...MtCO2e.", "energyindustries" = "Energy.Industries..MtCO2e.", "ManuIndusConst" = "Manufacturing.Industries.and.Construction..MtCO2e.", "transport" = "Transport..MtCO2e.", "othersectors" = "Other.Sectors..MtCO2e.", "energyother" = "Energy...Other..MtCO2e.", "fugitiveemissions" = "Fugitive.Emissions.from.Fuels..MtCO2e.")
 ```
+
+## Exploring GHG Emissions
 
 ``` r
 countryGHG1 <- countryGHG0 %>%
@@ -9789,7 +9771,7 @@ G1 <- countryGHG1 %>%
 G1
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 ghg <- countryGHG1 %>% group_by(Year) %>% mutate(meanghg = mean(totalGHGemissions), na.rm=TRUE)
@@ -9802,7 +9784,19 @@ G2 <- ghg %>%
 G2
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-5-2.png)<!-- --> \#\#\#
+Analysis I wanted to graph total GHG emissions by country to get a
+visual representation on which countries are emitting the most. There is
+a large amount of countries emitting lower than the top six emitters:
+USA, EU(15), EU(27), Russian Federation, Japan, and Germany. Note that
+EU(15) and EU(27) make up 15 and 17 countries. Taking that into account
+the top four emitters are USA, Russian Federation, Japan, and Germany.
+Additionally, I explored average GHG emissions by year to see if GHG
+emissions rate is decreasing. Form thr graph, it looks like the average
+GHG emission rate is moderately
+decreasing.
+
+## Breakdown of most commonly emitted GHGs
 
 ``` r
 percent <- countryGHG1 %>% mutate(percentco2 = totalCO2 / totalGHGemissions)
@@ -9813,15 +9807,10 @@ percent %>%
   ggtitle("Percent CO2 Emissions by Year")
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 percent3 <- percent %>% group_by(Country) %>% summarize(mean = mean(percentco2), na.rm=TRUE)
-```
-
-    ## `summarise()` ungrouping output (override with `.groups` argument)
-
-``` r
 percent3
 ```
 
@@ -9858,15 +9847,10 @@ percent1 %>%
   ggtitle("Percent CH4 Emissions by Year")
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 percent2 <- percent1 %>% group_by(Country) %>% summarize(mean = mean(percentch4), na.rm=TRUE)
-```
-
-    ## `summarise()` ungrouping output (override with `.groups` argument)
-
-``` r
 percent2
 ```
 
@@ -9903,15 +9887,10 @@ percent4 %>%
   ggtitle("Percent N2O Emissions by Year")
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 percent5 <- percent4 %>% group_by(Country) %>% summarize(mean = mean(percentn2o), na.rm=TRUE)
-```
-
-    ## `summarise()` ungrouping output (override with `.groups` argument)
-
-``` r
 percent5
 ```
 
@@ -9950,15 +9929,11 @@ percent6 %>%
 
     ## Warning: Removed 23 row(s) containing missing values (geom_path).
 
-![](proposal_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 percent7 <- percent6 %>% group_by(Country) %>% summarize(mean = mean(percentfgas), na.rm=TRUE) 
-```
 
-    ## `summarise()` ungrouping output (override with `.groups` argument)
-
-``` r
 percent7 <- na.omit(percent7)
 
 percent7 %>% summarize(mean1 = mean(mean), na.rm=TRUE)
@@ -9969,7 +9944,18 @@ percent7 %>% summarize(mean1 = mean(mean), na.rm=TRUE)
     ##    <dbl> <lgl>
     ## 1 0.0144 TRUE
 
-GHG by Sector
+### Analysis
+
+As you can see from the graphs that display an individual gas emission
+by year and country, the top GHG emitters highlighted before doesn’t
+always correlate to the high gas percentage relative to their total
+emissions. To dive deeper into a pattern I was seeing. I calculated the
+average percentage of each gas’s emission relative to other gas
+emissions by country and absolute average. The breakdown is 79.22% co2,
+11.26% ch4, 8.22% n2o, and 1.44% f gas. Most of the GHG emission is of
+co2, followed not closely by ch4 and n2o.
+
+\#\#GHG by Sector of the Economy
 
 ``` r
 G6 <- countryGHG1 %>% 
@@ -9978,7 +9964,7 @@ G6 <- countryGHG1 %>%
 G6
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ``` r
 G7 <- countryGHG1 %>% 
@@ -9987,7 +9973,7 @@ G7 <- countryGHG1 %>%
 G7
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 G8 <- countryGHG1 %>% 
@@ -9998,7 +9984,7 @@ G8
 
     ## Warning: Removed 22 row(s) containing missing values (geom_path).
 
-![](proposal_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 G9 <- countryGHG1 %>% 
@@ -10007,7 +9993,17 @@ G9 <- countryGHG1 %>%
 G9
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+\#\#\#Analysis Here I visualize total GHG emissions by sectors of the
+economy. The main sectors of the economy I explored include: energy,
+industrial processes, agriculture, and waste. In general the four
+highest GHG emitter pointed out in the first section are the high
+emitters relative to each sector. It is interesting to note that the
+waste sector acts as a carbon sink according to data. It aborbs
+greenhouse gases. In addition the high emitters have also the highest
+carbon sink within the waste sector.
+
+## US GHG Emissions and Sector Breakdown
 
 ``` r
 USA <- countryGHG0 %>% filter(Country == "United States of America")
@@ -10116,7 +10112,7 @@ USA1 <- USA %>%
 USA1
 ```
 
-![](proposal_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](proposal_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 USA2 <- USA %>% mutate(meanenergy = mean(energy), meanip = mean(industrialprocesses), meansolvent = mean(Solvent), meanagri = mean(agriculture), meanwaste = mean(waste), meanlucf = mean(LUCF), na.rm=TRUE) %>% mutate(ghgsector = meanenergy + meanip + meansolvent + meanagri + meanwaste + meanlucf)
@@ -10289,3 +10285,24 @@ USA2 %>% summarise(meanenergy / ghgsector, meanip / ghgsector, meansolvent / ghg
     ## 20         0.07570774          -0.1375669         0.02458719
     ## 21         0.07570774          -0.1375669         0.02458719
     ## 22         0.07570774          -0.1375669         0.02458719
+
+\#\#\#Analysis From the total GHG emissions graph by the US, it clear
+that GHG emissions is increasing by the US. This is a worrying trend
+that counters the growing climate awareness trend in the 21st century.
+Additionally I wanted to give a breakdown of sector emissions within the
+US. I calculated that the energy sector has 98% of the GHG emissions,
+while agriculture has 7.57%, followed by industrial processes at 5.47%,
+land use at 2.46%, and solvent at 0.076%. Note that waste was negative
+and wasn’t calculated in the percentage of emissions by sector.
+Technically, it’s the most green sector.
+
+## Wrap up
+
+In general, this project help elucidate the data on GHG emissions by
+country and sector. Moving forward this data could be used by policy
+makers to hihglight high emitting sectors like energy and agriculture.
+It can also be used to point out how co2, ch4 and n2o are the most
+commonly emitted GHG, from where policy makers can help push for
+fundings torwards technical innovation that will help provide methods to
+reduce these gasses in the atmosphere. I had a enjoyable time applying
+what I learned from class projects to my own individual project.
